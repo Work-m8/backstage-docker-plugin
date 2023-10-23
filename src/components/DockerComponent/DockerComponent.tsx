@@ -10,13 +10,13 @@ import { dockerApiRef, Repository } from '../../apis';
 
 import { useEntity } from '@backstage/plugin-catalog-react';
 
-export const ANNOTATION_DOCKER_REPOSITORY = 'docker.com/repository';
-
 import { Box, Chip } from '@material-ui/core';
 import {
   Table,
   TableColumn,
 } from '@backstage/core-components';
+
+export const ANNOTATION_DOCKER_REPOSITORY = 'docker.com/repository';
 
 const getDockerRepository = (entity: Entity) => 
     entity.metadata.annotations?.[ANNOTATION_DOCKER_REPOSITORY]?.trim();

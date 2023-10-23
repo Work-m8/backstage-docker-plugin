@@ -8,8 +8,6 @@ import {
 } from '@backstage/core-plugin-api';
 import { dockerApiRef, DockerClient } from './apis';
 
-import { rootRouteRef } from './routes';
-
 export const dockerPlugin = createPlugin({
   id: 'docker',
   apis: [
@@ -25,9 +23,6 @@ export const dockerPlugin = createPlugin({
       },
     }),
   ],
-  routes: {
-    root: rootRouteRef,
-  },
 });
 
 export const DockerRepositoriesWidget = dockerPlugin.provide(
