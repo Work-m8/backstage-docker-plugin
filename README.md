@@ -3,11 +3,11 @@
 
 ## Installation
 
-Install the `@workm8/backstage-plugin-docker` package in your frontend app package:
+Install the `@workm8/backstage-docker-plugin` package in your frontend app package:
 
 ```bash
 # From your Backstage root directory
-yarn add --cwd packages/app @workm8/backstage-plugin-docker
+yarn add --cwd packages/app @workm8/backstage-docker-plugin
 ```
 
 ### Set the proxy
@@ -31,7 +31,7 @@ In your `EntityPage.tsx` file located in `packages\app\src\components\catalog` w
 First we need to add the following imports:
 
 ```ts
-import { DockerRepositoriesWidget } from '@workm8/backstage-plugin-docker';
+import { DockerRepositoriesWidget } from '@workm8/backstage-docker-plugin';
 ```
 
 You can display the Widget by adding the following code (for example, the `overviewContent`):
@@ -102,4 +102,4 @@ This Personal Access Token needs to be added in the proxy.
 ```
 
 ## Issues
-If you come across any issues, please don't hesitate to open a [GitHub issue](https://github.com/work-m8/backstage-plugin-docker/issues).
+If you come across any issues, please don't hesitate to open a [GitHub issue](https://github.com/work-m8/backstage-docker-plugin/issues).
