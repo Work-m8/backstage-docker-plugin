@@ -1,20 +1,15 @@
 import React, { useMemo, useState } from 'react';
-import {
-  MissingAnnotationEmptyState
-} from '@backstage/core-components';
+
+import { MissingAnnotationEmptyState, ErrorPanel } from '@backstage/core-components';
 import { Entity } from '@backstage/catalog-model';
-
 import { useApi } from '@backstage/core-plugin-api';
-
-import { dockerApiRef, Repository } from '../../apis';
-
+import { Table, TableColumn } from '@backstage/core-components';
 import { useEntity } from '@backstage/plugin-catalog-react';
 
 import { Box, Chip } from '@material-ui/core';
-import {
-  Table,
-  TableColumn,
-} from '@backstage/core-components';
+import Typography from '@material-ui/core/Typography';
+
+import { dockerApiRef, Repository } from '../../apis';
 
 export const ANNOTATION_DOCKER_REPOSITORY = 'docker.com/repository';
 
@@ -43,8 +38,7 @@ const getDockerRepositoryUrl = (
   }
 };
 
-const getColumns = (options: DockerImagesTableProps) => {
-
+const getColumns = (options: DockerTagsTableProps) => {
     const columns: TableColumn[] = [];
 
     if ((options.columns || []).includes('name')) {
@@ -104,7 +98,7 @@ const getColumns = (options: DockerImagesTableProps) => {
     return columns;  
 }
 
-export interface DockerImagesTableProps {
+export interface DockerTagsTableProps {
     heading: string;
     columns: string[];
     initialPage: number;
@@ -113,8 +107,8 @@ export interface DockerImagesTableProps {
     showCountInHeading: boolean;
 }
       
-const DEFAULT_DOCKER_IMAGES_TABLE_PROPS: DockerImagesTableProps = {
-    heading: 'Docker Images',
+const DEFAULT_DOCKER_IMAGES_TABLE_PROPS: DockerTagsTableProps = {
+    heading: 'Docker Tags',
     columns: ['name', 'username', 'status', 'architecture'],
     initialPage: 0,
     pageSize: 5,
@@ -122,10 +116,10 @@ const DEFAULT_DOCKER_IMAGES_TABLE_PROPS: DockerImagesTableProps = {
     showCountInHeading: true
 }
 
-export const DockerImagesTable = (props: Partial<DockerImagesTableProps>) => {
+export const DockerTagsTable = (props: Partial<DockerTagsTableProps>) => {
     const { entity } = useEntity();
 
-    const options: DockerImagesTableProps = {
+    const options: DockerTagsTableProps = {
         ...DEFAULT_DOCKER_IMAGES_TABLE_PROPS,
         ...props,
     }
@@ -136,10 +130,16 @@ export const DockerImagesTable = (props: Partial<DockerImagesTableProps>) => {
         />);
     }
     
+    
 
     const dockerApi = useApi(dockerApiRef);
     const [containersCount, setContainersCount] = useState(0);
     const columns = useMemo(() => getColumns(options), []);
+    const [error, setError] = useState< { message: string, name: string } | null>(null);
+
+    if (error) {
+        return <ErrorPanel error={error} />;
+    }
 
     return (
         <Table
@@ -151,6 +151,11 @@ export const DockerImagesTable = (props: Partial<DockerImagesTableProps>) => {
                 pageSize: options.pageSize,
                 pageSizeOptions: options.pageSizeOptions
             }}
+            emptyContent={
+                <Typography color="textSecondary">
+                    No Git Tags found
+                </Typography>
+            }
             title={
                 (
                     <Box display="flex" alignItems="center">
@@ -164,17 +169,28 @@ export const DockerImagesTable = (props: Partial<DockerImagesTableProps>) => {
 
                     return dockerApi.getRepositories(`/docker/v2/namespaces/${url.organization}/repositories/${url.repository}/tags`, (query.page + 1), query.pageSize)
                         .then((res) => {
+                            console.log('RES', res);
                             setContainersCount(res.count);
                             return {
                                 data: res.results,
                                 totalCount: res.count,
                                 page: query.page
                             }
+                        }).catch((err: any) => {
+                            setError({
+                                message: err.message,
+                                name: err.status
+                            });
+                            return Promise.resolve({
+                                data: [],
+                                page: 0,
+                                totalCount: 0
+                            })
                         });
                 }
                 return Promise.resolve({
                     data: [],
-                    page: 1,
+                    page: 0,
                     totalCount: 0
                 })
             }}

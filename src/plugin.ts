@@ -6,10 +6,11 @@ import {
   discoveryApiRef,
   fetchApiRef,
 } from '@backstage/core-plugin-api';
+
 import { dockerApiRef, DockerClient } from './apis';
 
-export const dockerPlugin = createPlugin({
-  id: 'docker',
+export const dockerTagsPlugin = createPlugin({
+  id: 'docker.tags',
   apis: [
     createApiFactory({
       api: dockerApiRef,
@@ -25,13 +26,13 @@ export const dockerPlugin = createPlugin({
   ],
 });
 
-export const DockerRepositoriesWidget = dockerPlugin.provide(
+export const DockerTagsTableWidget = dockerTagsPlugin.provide(
   createComponentExtension({
-    name: 'DockerRepositoriesWidget',
+    name: 'DockerTagsTable',
     component: {
       lazy: () =>
-        import('./components/DockerComponent/DockerComponent').then(
-          d => d.DockerImagesTable,
+        import('./components/Docker/DockerTagsTable').then(
+          d => d.DockerTagsTable,
         ),
     },
   }),

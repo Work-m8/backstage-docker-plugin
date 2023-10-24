@@ -19,10 +19,10 @@ export type Image = {
 export type Repository = {
   creator: number;
   id: number;
-  images: Image[];
+  images: Partial<Image>[];
   last_updated: string;
   last_updater: number;
-  last_updated_username: string;
+  last_updater_username: string;
   name: string;
   repository: number;
   full_size: number;
@@ -39,7 +39,7 @@ export type TagsResponse = {
   count: number;
   next?: string;
   previous?: string;
-  results: Repository[];
+  results: Partial<Repository>[];
 };
 
 export interface DockerApi {
