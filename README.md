@@ -88,6 +88,14 @@ You can override the default header, columns and pagination.
 | pageSizeOptions | array | `[5, 10, 25]` | Possible page sizes. Must include `pageSize` |
 | showCountInHeading | boolean | true | If `true`, it shows the count of the total amount of Docker images in the heading. |
 
+By default, the table looks like this.
+<br />
+<img src='docs/all_columns.png' width='460px' style="display:block;">
+
+By disabling some columns, you can make it fit in smaller areas
+<br />
+<img src='docs/example.png' width='460px' style="display:block;">
+
 ## Private repositories
 For private repositories, you need to create a [Personal Access Token](https://hub.docker.com/settings/security) on Docker Hub.
 This Personal Access Token needs to be added in the proxy.
