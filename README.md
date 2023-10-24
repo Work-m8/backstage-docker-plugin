@@ -31,14 +31,14 @@ In your `EntityPage.tsx` file located in `packages\app\src\components\catalog` w
 First we need to add the following imports:
 
 ```ts
-import { DockerRepositoriesWidget } from '@workm8/backstage-docker-plugin';
+import { DockerTagsTableWidget } from '@workm8/backstage-docker-plugin';
 ```
 
 You can display the Widget by adding the following code (for example, the `overviewContent`):
 
 ```diff
-+ const dockerImagesContent = (
-+    <DockerRepositoriesWidget 
++ const dockerTagsContent = (
++    <DockerTagsTableWidget 
 +       heading="Docker" 
 +       columns={['name', 'username', 'status']} />
 + );
@@ -53,7 +53,7 @@ const overviewContent = (
       <EntityCatalogGraphCard variant="gridItem" height={400} />
     </Grid>
 +    <Grid item md={4} xs={12}>
-+      {dockerImagesContent}
++      {dockerTagsContent}
 +    </Grid>
     <Grid item md={4} xs={12}>
       <EntityLinksCard />

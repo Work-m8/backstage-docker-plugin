@@ -1,1 +1,1 @@
-export * from './DockerComponent/DockerComponent';
+export * from './Docker/DockerTagsTable';

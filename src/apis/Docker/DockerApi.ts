@@ -16,13 +16,23 @@ export class DockerClient implements DockerApi {
     pageNumber: number,
     pageSize: number,
   ): Promise<TagsResponse> {
-    console.log(this.options.configApi);
     const baseUrl = await this.options.discoveryApi.getBaseUrl('');
 
     const targetUrl = `${baseUrl}proxy${url}`;
 
-    return this.options.fetchApi
-      .fetch(`${targetUrl}?page=${pageNumber}&page_size=${pageSize}`)
-      .then(res => res.json());
+    return new Promise((resolve, reject) => {
+      this.options.fetchApi
+        .fetch(`${targetUrl}?page=${pageNumber}&page_size=${pageSize}`)
+        .then(res => res.json())
+        .then(res => {
+          if ('errinfo' in res) {
+            return reject({
+              name: 'Error',
+              message: `Could not find namespace ${res.errinfo.namespace} or repository ${res.errinfo.repository}`,
+            });
+          }
+          return resolve(res);
+        });
+    });
   }
 }
