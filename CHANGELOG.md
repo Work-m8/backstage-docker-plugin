@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/Work-m8/backstage-docker-plugin/compare/v1.0.0...v1.0.0) (2023-10-24)
+
+
+### Miscellaneous Chores
+
+* release 1.0.0 ([fa0a103](https://github.com/Work-m8/backstage-docker-plugin/commit/fa0a10307513bdfb4d45835bf7ef1e6f7ad887e3))
+
 ## 1.0.0 (2023-10-24)
 
 
