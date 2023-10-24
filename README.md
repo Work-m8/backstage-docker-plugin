@@ -3,11 +3,11 @@
 
 ## Installation
 
-Install the `@workm8/backstage-docker-plugin` package in your frontend app package:
+Install the `@workm8/backstage-docker-tags` package in your frontend app package:
 
 ```bash
 # From your Backstage root directory
-yarn add --cwd packages/app @workm8/backstage-docker-plugin
+yarn add --cwd packages/app @workm8/backstage-docker-tags
 ```
 
 ### Set the proxy
@@ -31,7 +31,7 @@ In your `EntityPage.tsx` file located in `packages\app\src\components\catalog` w
 First we need to add the following imports:
 
 ```ts
-import { DockerTagsTableWidget } from '@workm8/backstage-docker-plugin';
+import { DockerTagsTableWidget } from '@workm8/backstage-docker-tags';
 ```
 
 You can display the Widget by adding the following code (for example, the `overviewContent`):
