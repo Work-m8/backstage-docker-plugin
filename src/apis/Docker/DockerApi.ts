@@ -23,7 +23,7 @@ export class DockerClient implements DockerApi {
   ): Promise<TagsResponse> {
     
     const baseUrl = await this.options.discoveryApi.getBaseUrl('');
-
+    const url = registry === 'Docker' ? `/docker/v2/namespaces/${organization}/repositories/${repository}/tags` : `/docker/v2/${organization}/${repository}/tags/list`
     const targetUrl = `${baseUrl}proxy${url}`;
 
     const searchParams: URLSearchParams = new URLSearchParams();
