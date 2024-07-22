@@ -13,9 +13,11 @@ export type Registry = 'Docker' | 'GitHub';
 export class DockerClient implements DockerApi {
   constructor(private options: DockerClientOptions) {}
 
+
   async getRepositories(
+    organization: string,
+    repository: string,
     registry: Registry,
-    url: string,
     pageNumber: number | string,
     pageSize: number,
   ): Promise<TagsResponse> {
