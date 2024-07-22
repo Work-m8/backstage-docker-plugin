@@ -12,13 +12,17 @@ import Typography from '@material-ui/core/Typography';
 import { dockerApiRef, Repository } from '../../apis';
 
 export const ANNOTATION_DOCKER_REPOSITORY = 'docker.com/repository';
+export const ANNOTATION_DOCKER_REGISTRY = 'docker.com/registry';
 
 const getDockerRepository = (entity: Entity) => 
     entity.metadata.annotations?.[ANNOTATION_DOCKER_REPOSITORY]?.trim();
 
+const getDockerRegistry = (entity: Entity) => entity.metadata.annotations?.[ANNOTATION_DOCKER_REGISTRY]?.trim() as 'Docker' | 'GitHub';
 
 const isDockerRepositoryAvailable = (entity: Entity) =>
     Boolean(getDockerRepository(entity));
+
+const isDockerRegistryAvailable = (entity: Entity) => Boolean(getDockerRegistry(entity));
 
 const getDockerRepositoryUrl = (
   entity: Entity,
@@ -37,6 +41,11 @@ const getDockerRepositoryUrl = (
     repository
   }
 };
+
+const getRegistryType = (
+    entity: Entity
+): 'Docker' | 'GitHub' => isDockerRegistryAvailable(entity) ? getDockerRegistry(entity) : 'Docker';
+
 
 const getColumns = (options: DockerTagsTableProps) => {
     const columns: TableColumn[] = [];
@@ -165,16 +174,17 @@ export const DockerTagsTable = (props: Partial<DockerTagsTableProps>) => {
             }
             data={query => {
                 if (query) {
-                    const url = getDockerRepositoryUrl(entity)
+                    const url = getDockerRepositoryUrl(entity);
+                    const registry = getDockerRegistry(entity);
 
-                    return dockerApi.getRepositories(`/docker/v2/namespaces/${url.organization}/repositories/${url.repository}/tags`, (query.page + 1), query.pageSize)
+                    return dockerApi.getRepositories(url.organization, url.repository, registry, reqgistry === 'Docker' ? (query.page + 1) : query.last, query.pageSize)
                         .then((res) => {
-                            console.log('RES', res);
-                            setContainersCount(res.count);
+                            setContainersCount(registry === 'Docker' ? res.count : res.tags.length);
                             return {
                                 data: res.results,
                                 totalCount: res.count,
-                                page: query.page
+                                page: query.page,
+                                last: res.tags.at(-1)
                             }
                         }).catch((err: any) => {
                             setError({
